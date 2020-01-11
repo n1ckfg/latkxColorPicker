@@ -12,9 +12,12 @@ public class ShowHideGeneric : MonoBehaviour {
 
 	private float zPos = 0f;
 	private bool armRotCorrect = true;
+    private bool rotCorrect = false;
 
 	void Start() {
 		zPos = root.position.z;
+
+        rotCorrect = pointer != null;
 
 		for (int i = 0; i < target.Length; i++) {
 			target[i].SetActive (false);
@@ -32,7 +35,7 @@ public class ShowHideGeneric : MonoBehaviour {
 	public void showColor() {
 		isTracking = true;
 
-		if (armRotCorrect) {
+		if (rotCorrect && armRotCorrect) {
 			Ray ray = new Ray(pointer.position, -pointer.forward);
 			root.position = ray.GetPoint(zPos);
 			root.LookAt(pointer);
