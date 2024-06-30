@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class DraggableGeneric : MonoBehaviour {
 
+	public Camera cam;
     public enum PickMode { CAMERA, MOUSE };
     public PickMode pickMode = PickMode.CAMERA;
 	public ShowHideGeneric showHideGeneric;
@@ -18,10 +19,14 @@ public class DraggableGeneric : MonoBehaviour {
     private Ray ray;
     private Vector3 rayPos, rayDir;
 
+	void Awake() {
+		if (cam == null) cam = Camera.main;
+	}
+
     void FixedUpdate() {
         if (pickMode == PickMode.CAMERA) {
-            rayPos = Camera.main.transform.position;
-            rayDir = Camera.main.transform.forward;
+            rayPos = cam.transform.position;
+            rayDir = cam.transform.forward;
         }
 
 		if (showHideGeneric.isTracking) {//(sixCtl.menuDown) {
@@ -29,7 +34,7 @@ public class DraggableGeneric : MonoBehaviour {
             if (pickMode == PickMode.CAMERA) {
                 ray = new Ray(rayPos, rayDir);
             } else if (pickMode == PickMode.MOUSE) {
-                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                ray = cam.ScreenPointToRay(Input.mousePosition);
             }
 
 			RaycastHit hit;
@@ -45,7 +50,7 @@ public class DraggableGeneric : MonoBehaviour {
             if (pickMode == PickMode.CAMERA) {
                 ray = new Ray(rayPos, rayDir);
             } else {
-                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                ray = cam.ScreenPointToRay(Input.mousePosition);
             }
 
             RaycastHit hit;
